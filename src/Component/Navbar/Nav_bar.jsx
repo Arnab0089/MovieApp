@@ -6,24 +6,14 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useTheme } from '@emotion/react';
 import Brightness5Icon from '@mui/icons-material/Brightness5';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import MovieFilterIcon from '@mui/icons-material/MovieFilter';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Box from '@mui/material/Box';
-import EditIcon from '@mui/icons-material/Edit';
+
+
+
 import {Link} from 'react-router-dom'
 
 export default function Nav_bar({ toggleDarkMode,darkMode }) {
   const theme=useTheme()
-  const actions = [
-    { icon: <MovieFilterIcon />, name: 'movie' },
-    { icon: <LiveTvIcon/>, name: 'TvShow' },
-    { icon: <HomeIcon/>, name: 'Home' },
-    { icon: <AccountCircleIcon/>, name: 'account' },
-  ];
+ 
   return (
    <>
     <AppBar sx={{ backgroundColor: theme.palette.background.default }}>
@@ -59,21 +49,7 @@ export default function Nav_bar({ toggleDarkMode,darkMode }) {
         </Toolbar>
       </Container>
     </AppBar>
-    <Box sx={{ height:'100vh', transform: 'translateZ(0px)', flexGrow: 1,display:{xs:'block',sm:'none'} }}>
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
-    </Box>
+   
    </>
   )
 }

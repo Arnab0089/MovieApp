@@ -7,6 +7,8 @@ import Movies from './Component/Movies/Movies';
 import TvShows from './Component/TvShows/TvShows';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import Lowernav from './Component/Navbar/Lowernav';
+import Show from './Component/Show/Show';
 
 
 export default function App() {
@@ -29,6 +31,9 @@ export default function App() {
           text: {
             primary: darkMode ? '#8d99ae' : '#d90429',
           },
+          button:{
+            default: darkMode ? '#EF233C' : '#8D99AE',
+          }
         },
       }),
     [darkMode],
@@ -38,11 +43,14 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode}/>
+      
       <Routes> {/* Wrap Routes around your Route components */}
-        <Route path="/" element={<Home />} /> {/* Use "element" prop instead of "component" */}
+        <Route path="/" element={<Home darkMode={darkMode} />} /> {/* Use "element" prop instead of "component" */}
         <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TvShows />} />
+        <Route path="/:type/:id" element={<Show />} />
       </Routes>
+      <Lowernav/>
     </ThemeProvider>
   </Router>
   )
