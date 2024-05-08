@@ -9,9 +9,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
 import Lowernav from './Component/Navbar/Lowernav';
 import Show from './Component/Show/Show';
+import Search from './Component/Searchbar/Search';
+import { AuthProvider } from './context/authProvider';
+import { useAuth } from './context/useAuth';
 
 
 export default function App() {
+  
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -40,18 +44,21 @@ export default function App() {
   );
   return (
     <Router>
+    <AuthProvider>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode}/>
+      <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
       
       <Routes> {/* Wrap Routes around your Route components */}
         <Route path="/" element={<Home darkMode={darkMode} />} /> {/* Use "element" prop instead of "component" */}
         <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TvShows />} />
         <Route path="/:type/:id" element={<Show />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
       <Lowernav/>
     </ThemeProvider>
+    </AuthProvider>
   </Router>
   )
 }

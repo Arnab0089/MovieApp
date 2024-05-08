@@ -58,7 +58,7 @@ export default function Home({darkMode}) {
   //   fetchData();
   // },[timeWindow,type,id])
 
-  console.log(data,'data')
+  
   
   return (
     <>

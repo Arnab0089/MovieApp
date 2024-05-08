@@ -94,7 +94,7 @@ export default function Show() {
         fetchData();
     },[type,id])
 
-    console.log(cast)
+    
 
     const title=details?.title||details?.name
     const releaseDate=type==='tv'?details?.first_air_date:details?.release_date
@@ -117,7 +117,7 @@ export default function Show() {
         const hours=Math.floor(minutes/60)
         const min=(minutes%60)
          
-        return`${hours}hour ${min}mins`
+        return`${hours} hour  ${min } min`
     }
 
     return (

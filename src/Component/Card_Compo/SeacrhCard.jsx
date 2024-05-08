@@ -19,25 +19,25 @@ export default function ({item}) {
         />
        
        <CardContent sx={{display:{xs:'flex',sm:'none'},justifyContent:'center',alignItems:'center',textAlign:'center',flexDirection:'column' ,p:5}}>
-          <Typography variant='h6'>
+          <Typography>
             {item?.title || item?.name}
           </Typography>
         </CardContent>
         <Box className="overlay" sx={{position:'absolute',bottom:0,left:0,width:'100%',height:'100%',bgcolor:'rgba(0,0,0,0.8)',opacity:0,transition:'opacity 0.3s ease-in-out'}} >
         <CardContent sx={{display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center',flexDirection:'column',py:5}}>
-          <Typography variant='h4' sx={{display:{xs:'none',sm:'block'}}}>
+          <Typography  sx={{display:{xs:'none',sm:'block'}}}>
             {item?.title || item?.name}
           </Typography>
-          <Typography sx={{fontSize:'32px'}}>
+          <Typography >
             <StarIcon/>
           </Typography>
-          <Typography sx={{fontSize:'32px'}}>
-            {item?.vote_average !== 0 ? item?.vote_average.toFixed(1) : "Unknown"}/10
+          <Typography >
+            {item?.vote_average ? item.vote_average.toFixed(1) : "Unknown"}/10
           </Typography>
           {
             item?.media_type && 
             (
-              <Typography  sx={{fontSize:'32px'}}>
+              <Typography >
                 {item?.media_type==='movie'?'Movie':'Tv Show'}
               </Typography>
             )
