@@ -19,7 +19,8 @@ export default function Lowernav() {
     ];
 
     return (
-        <Box sx={{ height: '100%', transform: 'translateZ(0px)', flexGrow: 1, display: { xs: 'block', sm: 'none' } }}>
+        <div className="fixed bottom-4 right-2 z-50 sm:hidden">
+
             <SpeedDial
                 ariaLabel="SpeedDial openIcon example"
                 sx={{ position: 'absolute', bottom: 16, right: 16 }}
@@ -33,6 +34,7 @@ export default function Lowernav() {
                     />
                 ))}
             </SpeedDial>
-        </Box>
+        </div>
+        
     );
 }

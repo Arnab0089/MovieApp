@@ -37,6 +37,9 @@ export default function Nav_bar({ toggleDarkMode,darkMode }) {
                 <li className='mx-2' >
                   <Typography variant='h6' component={Link} to='/search' sx={{color:theme.palette.text.primary,display: { xs: 'none', sm: 'block' }}}>Search</Typography>
                 </li>
+                {
+                  
+                }
               </ul>
             </div>
           </div>
