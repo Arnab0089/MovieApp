@@ -35,6 +35,7 @@ export default function Show() {
   const [video, setvideo] = useState(null);
   const [videos, setvideos] = useState([]);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const [screenWidth, setScreenWidth] = useState(0);
 
   const handleClose = () => {
     setOpen(false);
@@ -103,9 +104,28 @@ export default function Show() {
     fetchData();
   }, [type, id]);
 
+  useEffect(() => {
+    window.addEventListener("resize", (e) => {
+      setScreenWidth(window.innerWidth);
+    });
+  }, []);
+
   const title = details?.title || details?.name;
   const releaseDate =
     type === "tv" ? details?.first_air_date : details?.release_date;
+
+  const handleSavetoWatchlist = async () => {
+    const data = {
+      id: details?.id,
+      title: details?.name || details?.name,
+      type: type,
+      poster_path: details?.poster_path,
+      release_date: details?.release_date || details?.first_air_date,
+      vote_average: details?.vote_average,
+      overview: details?.overview,
+    };
+    console.log("Data", data);
+  };
 
   const formatDate = (releaseDate) => {
     const date = new Date(releaseDate);
@@ -132,15 +152,15 @@ export default function Show() {
     <>
       <Box
         sx={{
-          my: 10,
-          mx: 5,
           py: 2,
           background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url(${imagePathOriginal}/${details?.backdrop_path}})`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          borderRadius: "20px",
         }}
+        my={{ xs: 7, sm: 10 }}
+        mx={{ xs: 0, sm: 5 }}
+        borderRadius={{ xs: 0, sm: "20px" }}
       >
         {loading && (
           <Stack justifyContent="center">
@@ -273,7 +293,11 @@ export default function Show() {
                   </Button>
                 </Box>
                 <Box textAlign={"center"}>
-                  <Button variant="outlined" startIcon={<AddIcon />}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    onClick={handleSavetoWatchlist}
+                  >
                     Add WatchList
                   </Button>
                 </Box>
