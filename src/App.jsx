@@ -58,7 +58,11 @@ export default function App() {
             <Route path="/search" element={<Search />} />
             <Route
               path="/watchlist"
-              element={<Protected element={<WatchList />} />}
+              element={
+                <Protected>
+                  <WatchList />
+                </Protected>
+              }
             />
           </Routes>
           <Lowernav />

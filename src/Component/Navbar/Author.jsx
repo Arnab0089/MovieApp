@@ -10,9 +10,12 @@ import { Link } from "react-router-dom";
 export default function Author({ user, signInWithPopup, logOut }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log(user?.photoURL);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -25,6 +28,7 @@ export default function Author({ user, signInWithPopup, logOut }) {
     }
     setAnchorEl(null);
   };
+
   const handleLogout = async () => {
     try {
       await logOut();
@@ -33,6 +37,7 @@ export default function Author({ user, signInWithPopup, logOut }) {
     }
     setAnchorEl(null);
   };
+
   return (
     <div>
       <Avatar
@@ -55,12 +60,14 @@ export default function Author({ user, signInWithPopup, logOut }) {
         {!user ? (
           <MenuItem onClick={handleGoogleLogin}>Login</MenuItem>
         ) : (
-          <>
-            <Link to="/watchlist">
+          [
+            <Link to="/watchlist" key="watchlist">
               <MenuItem onClick={handleClose}>My Watchlist</MenuItem>
-            </Link>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </>
+            </Link>,
+            <MenuItem onClick={handleLogout} key="logout">
+              Logout
+            </MenuItem>,
+          ]
         )}
       </Menu>
     </div>

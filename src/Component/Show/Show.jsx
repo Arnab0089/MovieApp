@@ -7,6 +7,7 @@ import {
   Button,
   Grid,
   Chip,
+  Alert,
 } from "@mui/material";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -24,10 +25,15 @@ import VideoCompo from "../VideoComponent/VideoCompo";
 import ProfileMan from "../../assets/How-Do-You-Have-No-Profile-Picture-on-Facebook_25900.png";
 import ProfileWoman from "../../assets/main-qimg-1664fff485408ef7ece9e82224baa5cc.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { useAuth } from "../../context/useAuth";
+import { usefirestore } from "../Services/usefirestore";
 
 export default function Show() {
   const router = useParams();
   const { type, id } = router;
+  const { user } = useAuth();
+  const { addDocument, addToWatchList, checkWatchlist, removeWatchList } =
+    usefirestore();
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [details, setdetails] = useState({});
@@ -36,6 +42,9 @@ export default function Show() {
   const [videos, setvideos] = useState([]);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const [screenWidth, setScreenWidth] = useState(0);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [inWatchList, setinWatchList] = useState(false);
+  const [isremove, setisremove] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -78,6 +87,7 @@ export default function Show() {
 
         // Fetch Details
         setdetails(detailsData);
+        console.log(detailsData);
 
         //Fetch Casting
         setcast(creditsData?.cast?.slice(0, 20));
@@ -114,18 +124,54 @@ export default function Show() {
   const releaseDate =
     type === "tv" ? details?.first_air_date : details?.release_date;
 
+  const handleremovefromWatchList = async () => {
+    await removeWatchList(user.uid, id);
+    const inWatchList = await checkWatchlist(user.uid, id);
+    setinWatchList(inWatchList);
+    setisremove(true);
+    setTimeout(() => {
+      setisremove(false);
+    }, 3000);
+  };
+
   const handleSavetoWatchlist = async () => {
+    if (!user) {
+      setAlertVisible(true);
+      return;
+    }
     const data = {
       id: details?.id,
-      title: details?.name || details?.name,
+      title: details?.title || details?.name,
       type: type,
       poster_path: details?.poster_path,
       release_date: details?.release_date || details?.first_air_date,
       vote_average: details?.vote_average,
       overview: details?.overview,
     };
-    console.log("Data", data);
+
+    const dataId = details?.id?.toString();
+
+    await addToWatchList(user.uid, dataId, data);
+    const inWatchList = await checkWatchlist(user.uid, dataId);
+    setinWatchList(inWatchList);
   };
+
+  useEffect(() => {
+    if (user) {
+      setAlertVisible(false);
+      setisremove(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      setinWatchList(false);
+      return;
+    }
+    checkWatchlist(user.uid, id).then((data) => {
+      setinWatchList(data);
+    });
+  }, [id, user]);
 
   const formatDate = (releaseDate) => {
     const date = new Date(releaseDate);
@@ -150,6 +196,25 @@ export default function Show() {
 
   return (
     <>
+      {alertVisible && (
+        <Alert
+          severity="warning"
+          onClose={() => setAlertVisible(false)}
+          sx={{ position: "fixed", bottom: 10 }}
+        >
+          You need to be logged in to add items to your watchlist!
+        </Alert>
+      )}
+      {isremove && (
+        <Alert
+          severity="warning"
+          onClose={() => setAlertVisible(false)}
+          sx={{ position: "fixed", bottom: 10 }}
+        >
+          Remove SuccessFully
+        </Alert>
+      )}
+
       <Box
         sx={{
           py: 2,
@@ -287,20 +352,28 @@ export default function Show() {
                     </Stack>
                   </Box>
                 </Box>
-                <Box textAlign={"center"} display={"none"}>
-                  <Button variant="contained" startIcon={<DownloadDoneIcon />}>
-                    In WatchList
-                  </Button>
-                </Box>
-                <Box textAlign={"center"}>
-                  <Button
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    onClick={handleSavetoWatchlist}
-                  >
-                    Add WatchList
-                  </Button>
-                </Box>
+                {inWatchList ? (
+                  <Box textAlign={"center"}>
+                    <Button
+                      variant="contained"
+                      startIcon={<DownloadDoneIcon />}
+                      onClick={handleremovefromWatchList}
+                    >
+                      Remove WatchList
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box textAlign={"center"}>
+                    <Button
+                      variant="outlined"
+                      startIcon={<AddIcon />}
+                      onClick={handleSavetoWatchlist}
+                    >
+                      Add WatchList
+                    </Button>
+                  </Box>
+                )}
+
                 <Box py={2} display={"flex"} flexDirection={"column"} gap={2}>
                   <Typography
                     variant={isSmallScreen ? "h6" : "h4"}
