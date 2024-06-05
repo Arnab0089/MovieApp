@@ -53,8 +53,8 @@ const WatchlistCard = ({ type, item, setWatchlist }) => {
                   alt={item?.title || "Poster"}
                   sx={{
                     height: {
-                      xs: "300px", // Smaller height for small screens
-                      sm: "400px", // Standard height for larger screens
+                      xs: "400px", // Smaller height for small screens
+                      sm: "450px", // Standard height for larger screens
                     },
                     minWidth: "150px",
                     objectFit: "cover",
